@@ -1,0 +1,71 @@
+{% include 'users/header.html' %}
+
+<title> {% block title %} My Request {% endblock title %} </title>
+{% block block %}
+    {% if messages %}
+        <div class="container">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss= "alert">
+                        <span aria-hidden="true"> &times;</span>
+                    </button>
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+    {% if object_list %}
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th> <th>Asset</th> <th>Quantity Required</th> <th>Requesting Date</th> <th>Expected Date</th> <th>Status</th><th>last update</th>
+                    <th>Update</th> <th>Delete</th>
+                </tr>
+            </thead>
+            {% for object in object_list %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td> <a href="}"> {{object.asset_name_id | upper}} </a> </td>
+                    <td> {{object.quantity_required | upper}} </td>
+                    <td> {{object.requesting_date | upper}} </td>
+                    <td> {{object.expected_date | upper}} </td>
+                    <td> {{object.status | upper}} </td>
+                    <td> {{object.last_update | upper}} </td>
+                    <td> <a href="{% url 'users:updaterequest' pk=object.id  %}">Update</a> </td>
+                    <td> <a href="{% url 'users:deleterequest' pk=object.id  %}">Delete</a> </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>No Result Found</h2>
+    {% endif %}
+
+    {% if is_paginated %}
+    <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Previous</a></li>
+            {% endif %}
+
+            {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></span></a> </li>
+                {% else %}
+                    <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li ><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            {% else %}
+            <li class="page-item disabled""> <a class="page-link" href="#" tabindex="-1">Next</a></li>
+        {% endif %}
+    </ul>
+{% endif %}
+        
+{% endblock block %}
+    

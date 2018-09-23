@@ -1,0 +1,16 @@
+{% include "users/header.html" %}       
+{% load crispy_forms_tags %}   
+<title> {% block title %}Login {% endblock title %} </title>
+{% block block %}
+    
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8 bg-light text-dark">
+                <form action="" method="post"> {% csrf_token %}
+                        {{form}}
+                        <input class="btn btn-primary btn-lg btn-block" type="submit" value="Login">
+                    </form>
+        </div>
+    </div>
+    
+{% endblock block %}

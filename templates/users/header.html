@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <title>MS Career Assist</title>
+</head>
+
+<body id="home">
+    <nav class="navbar navbar-toggleable-md navbar-light fixed-top py-4" style="height:105px">
+        <div class="container">
+            <button class="navbar-toggler navbar-toggler-right"><span class="navbar-toggler-icon" data-toggle="collapse" data-target="#navbarNav"></span></button>
+            <a href="#" class="navbar-brand">
+                <img src="/media/img/mlogo.png" width="50" height="50" alt="">
+                <h3 class="d-inline align-middle">MS Career Assist</h3>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="" class="nav-link " style="color:#088A85 ">Home</a>
+                    </li>
+
+
+                    <li class="nav-item inline ">
+                        <p class="nav-link " style="color:#088a85 ">
+                                {% if user.is_authenticated %} 
+                                        <li class="nav-item ">
+                                            <a href=" " class="nav-link " style="color:#088A85 ">Add Requests</a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href=" " class="nav-link " style="color:#088A85 ">My Requests</a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href="" class="nav-link " style="color:#088A85 ">Pending Requests</a>
+                                        </li>
+                                        <li class="nav-item ">
+                                            <a href=" " class="nav-link " style="color:#088A85 ">Previous Requests</a>
+                                        </li>
+                                        
+                                Hello, {{ user.get_username }}
+                                <button type="button " class="btn btn-outline-primary "><a href ="{% url 'logout' %} ">Logout</a></button>
+                                
+                            {% else %}
+                                <li class="nav-item ">
+                                        <a href="#about " class="nav-link " style="color:#088A85 ">About</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="#authors " class="nav-link " style="color:#088A85 ">Testimonials</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="#contact " class="nav-link " style="color:#088A85 ">Contact</a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="{% url 'login' %}" class="nav-link " style="color:#088A85 ">Login
+                                        </a>
+                                </li>
+                            {% endif %} 
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% block block %} {% endblock block %}
+
+</body>
+
+</html>
