@@ -20,8 +20,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from users.views import home
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('users/', include('users.urls')),
     path('', home, name = 'home'),
     path('login/', auth_views.login,{'template_name': 'users/login.html'}, name='login'),
     path('logout/', auth_views.logout, name='logout'),
