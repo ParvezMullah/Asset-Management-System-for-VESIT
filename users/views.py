@@ -53,7 +53,7 @@ class AssetRequestListView(ListView):
         queryset = queryset.filter(email = self.request.user.email)
         return queryset 
 
-class LostAndFoundUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class AssetRequestUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = AssetRequest
     fields = [f.name for f in AssetRequest._meta.get_fields()]
     fields.remove('email')
@@ -68,5 +68,16 @@ class LostAndFoundUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView
 
     def form_valid(self, form):
         form.instance.last_update = django.utils.timezone.now()
-        form_valid = super(LostAndFoundUpdateView, self).form_valid(form)
+        form_valid = super(AssetRequestUpdateView, self).form_valid(form)
         return form_valid
+
+
+class AssetRequestDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = AssetRequest
+    template_name = "users/delete-request.html"
+    success_message = 'deleted successfully.'
+    success_url = '/users/myrequest/'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(AssetRequestDeleteView, self).delete(request, *args, **kwargs)
