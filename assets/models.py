@@ -34,7 +34,7 @@ class AssetPurchase(models.Model):
             p = AssetStock(asset_name=self.asset_name, asset_quantity=self.asset_quantity)
             p.save()
         super(AssetPurchase, self).save(*args, **kwargs) # Call the real save() method
-
+    
 
 class AssetStock(models.Model):
     asset_name = models.ForeignKey(Assets, on_delete=models.CASCADE,primary_key = True)

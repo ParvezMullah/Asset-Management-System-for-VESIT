@@ -19,7 +19,7 @@ class CustomUser(AbstractUser):
         ('EXTC', 'EXTC'),
         ('INSTRUMENT', 'INSTRUMENT')
     )
-    email = models.CharField(max_length=50)
+    email = models.CharField(max_length=50, unique = True)
     #password = models.CharField(max_length=40, blank=True, null=True)
     mobile = models.CharField(max_length=10)
     role = models.CharField(max_length=20,choices = roles, null=True, unique = True)
@@ -32,8 +32,8 @@ class CustomUser(AbstractUser):
     # last_login = models.DateTimeField(blank=True, null=True, verbose_name='last login'),
     # is_superuser = models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status', editable = False),
     
-    REQUIRED_FIELDS = ['email','mobile']
-    
+    REQUIRED_FIELDS = ['mobile']
+    USERNAME_FIELD = 'email'
 
     def __str__(self):
         return self.email
