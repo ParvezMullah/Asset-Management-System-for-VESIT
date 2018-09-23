@@ -100,6 +100,8 @@ class AssetRequestStatusListView(ListView):
             queryset = queryset.filter(department = self.request.user.department)
         elif current_user_role == 'Principal Office':
             queryset = queryset.filter(status = 'initiated')
+        else:
+            queryset = ''
         return queryset 
     
     
@@ -115,3 +117,21 @@ class AssetRequestStatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, Upda
         form.instance.last_updated_by_role = self.request.user.role
         form_valid = super(AssetRequestStatusUpdateView, self).form_valid(form)
         return form_valid
+
+
+class AssetRequestApprovedListView(ListView):
+    model = AssetRequest
+    template_name = "users/approved-request.html"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super(AssetRequestApprovedListView, self).get_queryset()
+        current_user_role = self.request.user.role
+        if current_user_role == 'Purchase Officer':
+            queryset = queryset.filter(status = 'approved')
+            queryset = queryset.filter(department = self.request.user.department)
+        elif current_user_role == 'Store Manager':
+            queryset = queryset.filter(status = 'approved')
+        else:
+            queryset = ''
+        return queryset 
