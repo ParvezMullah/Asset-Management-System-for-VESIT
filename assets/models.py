@@ -31,7 +31,8 @@ class AssetPurchase(models.Model):
             qs.asset_quantity = self.asset_quantity + self.asset_quantity
             qs.save()
         except AssetStock.DoesNotExist:
-            print('does not exist')
+            p = AssetStock(asset_name=self.asset_name, asset_quantity=self.asset_quantity)
+            p.save()
         super(AssetPurchase, self).save(*args, **kwargs) # Call the real save() method
 
 
