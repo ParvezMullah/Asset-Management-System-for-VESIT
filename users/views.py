@@ -28,6 +28,7 @@ class AssetRequestCreateView(SuccessMessageMixin, CreateView):
     fields.remove('last_updated_by_role')
     fields.remove('requesting_date')
     fields.remove('last_update')
+    fields.remove('department')
     template_name = "users/add-request.html"
     success_message = 'request added successfully.'
     success_url = '/users/myrequest'
@@ -40,6 +41,7 @@ class AssetRequestCreateView(SuccessMessageMixin, CreateView):
         form.instance.role = self.request.user.role
         form.instance.last_updated_by_role = self.request.user.role
         form.instance.last_update = django.utils.timezone.now()
+        form.instance.department = self.request.user.department
         return super(AssetRequestCreateView, self).form_valid(form)
 
 
@@ -62,6 +64,7 @@ class AssetRequestUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView
     fields.remove('last_updated_by_role')
     fields.remove('requesting_date')
     fields.remove('last_update')
+    fields.remove('department')
     template_name = "users/update-request.html"
     success_message = 'request updated successfully.'
     success_url = '/users/myrequest'
@@ -81,3 +84,34 @@ class AssetRequestDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(AssetRequestDeleteView, self).delete(request, *args, **kwargs)
+
+
+class AssetRequestStatusListView(ListView):
+    model = AssetRequest
+    fields = [f.name for f in AssetRequest._meta.get_fields()]
+    template_name = "users/pending-request.html"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super(AssetRequestStatusListView, self).get_queryset()
+        current_user_role = self.request.user.role
+        if current_user_role == 'Purchase Officer':
+            queryset = queryset.filter(status = 'requested')
+            queryset = queryset.filter(department = self.request.user.department)
+        elif current_user_role == 'Principal Office':
+            queryset = queryset.filter(status = 'initiated')
+        return queryset 
+    
+    
+class AssetRequestStatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = AssetRequest
+    fields = ['status']
+    template_name = "users/status-update.html"
+    success_message = 'request updated successfully.'
+    success_url = '/users/myrequest'
+
+    def form_valid(self, form):
+        form.instance.last_update = django.utils.timezone.now()
+        form.instance.last_updated_by_role = self.request.user.role
+        form_valid = super(AssetRequestStatusUpdateView, self).form_valid(form)
+        return form_valid
