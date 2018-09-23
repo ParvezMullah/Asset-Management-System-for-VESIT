@@ -9,5 +9,5 @@ class CustomUserAdmin(admin.ModelAdmin):
     class Meta:
         model = CustomUser
 
-admin.site.site_header = 'LostAndFound Admininstration'
+admin.site.site_header = 'Asset Management  Admininstration'
 admin.site.register(CustomUser, CustomUserAdmin)
