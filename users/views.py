@@ -13,6 +13,9 @@ import django.utils.timezone
 from assetrequestprocessing.models import(
     AssetRequest
 )
+from assets.models import(
+    AssetStock
+)
 # Create your views here.
 
 def home(request):
@@ -115,6 +118,18 @@ class AssetRequestStatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, Upda
     def form_valid(self, form):
         form.instance.last_update = django.utils.timezone.now()
         form.instance.last_updated_by_role = self.request.user.role
+        # selected_status = form.cleaned_data.get("status")
+        # if selected_status == 'Recieved':
+        #     qs =  AssetStock.objects.filter(asset_name_id = form.cleaned_data.get("asset_name_id"))
+        #     # current_quantity = qs.asset_quantity
+        #     required_quantity = form.cleaned_data.get("quantity_required")
+        #     # if current_quantity > required_quantity:
+        #     #     qs.asset_quantity = qs.asset_quantity - required_quantity
+        #     #     qs.save()
+        #     # else:
+        #     #     print('Less Quantity is availabe')
+        # else:
+        #     print('status is' + selected_status)
         form_valid = super(AssetRequestStatusUpdateView, self).form_valid(form)
         return form_valid
 
