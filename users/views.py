@@ -110,7 +110,7 @@ class AssetRequestStatusUpdateView(LoginRequiredMixin, SuccessMessageMixin, Upda
     fields = ['status']
     template_name = "users/status-update.html"
     success_message = 'request updated successfully.'
-    success_url = '/users/myrequest'
+    success_url = '/users/pendingrequest'
 
     def form_valid(self, form):
         form.instance.last_update = django.utils.timezone.now()
@@ -135,3 +135,4 @@ class AssetRequestApprovedListView(ListView):
         else:
             queryset = ''
         return queryset 
+

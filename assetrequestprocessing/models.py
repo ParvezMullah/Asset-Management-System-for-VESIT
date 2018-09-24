@@ -8,11 +8,18 @@ from users.models import(
 )
 # Create your models here.
 class AssetRequest(models.Model):
+    status_choices = (
+        ('Requested','Requested' ),
+        ('Initiated', 'Initiated'),
+        ('Approved', 'Approved'),
+        ('Recieved', 'Recieved'),
+        ('Cancelled', 'Cancelled'),
+    )
     email = models.CharField(max_length=40, blank=True, null=True)
     asset_name = models.ForeignKey(Assets, on_delete=models.CASCADE,)
     quantity_required = models.IntegerField()
     expected_date   = models.DateField()
-    status = models.CharField(default = 'requested', max_length = 30)
+    status = models.CharField(default = 'requested',choices = status_choices,  max_length = 30)
     role = models.CharField(max_length = 40, )
     last_updated_by_role = models.CharField(max_length = 30, default = 'self')
     requesting_date = models.DateField(django.utils.timezone.now)
